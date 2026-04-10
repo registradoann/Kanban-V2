@@ -333,7 +333,9 @@ input[readonly] {
 
 /* EMAIL BODY (FINAL FIX) */
 .email-body {
-    background: #f5f5f5;
+    background: rgba(255,255,255,0.85);  /* light background */
+    color: #000;                         /* 👈 FIX: force dark text */
+
     padding: 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
@@ -341,8 +343,8 @@ input[readonly] {
     font-size: 13px;
     line-height: 1.5;
 
-    height: 400px;        /* fixed box */
-    overflow-y: auto;     /* scroll inside */
+    height: 400px;
+    overflow-y: auto;
 }
 /* BUTTONS */
 .modal-actions {
@@ -404,4 +406,217 @@ footer {
 
 .bottom-actions {
     margin-top: 10px;
+}
+
+/*PROFILE CSS*/
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* better proportions */
+    gap: 20px;
+
+    width: 100%;
+    height: 100%;         /* 👈 important */
+}
+
+.profile-left,
+.profile-right {
+    min-height: 0;        /* 👈 critical for flex/grid stability */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.profile-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.profile-info h2 {
+    margin: 0;
+}
+
+.profile-info p {
+    margin: 4px 0;
+    opacity: 0.85;
+}
+
+.mini-kanban {
+    display: flex;
+    gap: 12px;
+}
+
+.mini-column {
+    flex: 1;
+    background: rgba(0,0,0,0.35);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.mini-column h4 {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #54AD7C;
+}
+
+.profile-card-right {
+    background: rgba(0,0,0,0.35); /* 👈 match kanban */
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: scroll;
+    height: 800px;
+}
+.profile-card-left {
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(10px); /* 👈 match kanban */
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+.mini-card {
+    background: rgba(255,255,255,0.10);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+.mini-card:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+.mini-top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.mini-assignee {
+    margin-left: auto;
+}
+
+.mini-subject {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.mini-requestor {
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+/* SCROLLBAR - CLEAN GLASS STYLE */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);   /* 👈 soft dark, not white */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.logout-item {
+    margin-top: auto;              /* pushes it to bottom */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+    color: #ff6b6b;
+}
+
+.logout-item:hover {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff6b6b;
+}
+
+.code-layout {
+    display: flex;
+    gap: 20px;
+}
+
+/* LEFT 30% */
+.code-left {
+    width: 30%;
+}
+
+.code-menu {
+    background: rgba(0,0,0,0.35);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* MENU ITEMS */
+.code-menu-item {
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.code-menu-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.code-menu-item.active {
+    background: rgba(84,173,124,0.3);
+}
+
+/* RIGHT 70% */
+.code-right {
+    width: 70%;
+}
+
+/* CONTENT CARD */
+.code-content-card {
+    background: rgba(0,0,0,0.35);
+    border-radius: 10px;
+    padding: 15px;
+    height: 810px;
+    position: relative;   /* 👈 REQUIRED */
+}
+
+.fab-add {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+    border: none;
+
+    font-size: 24px;
+    color: white;
+
+    cursor: pointer;
+
+    /* glass look */
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+    transition: all 0.2s ease;
 }

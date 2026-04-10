@@ -1,3 +1,7 @@
+if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+}
+
 // ===== GLOBAL VARIABLES =====
 let draggedCard = null;
 let pendingMove = null;
@@ -57,6 +61,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     }
+
+    // ===== PROFILE IMAGE PREVIEW =====
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('profileImage').src = URL.createObjectURL(file);
+            }
+        });
+    }
+
+    // ===== MINI KANBAN CLICK (VIEW ONLY MODE) =====
+    document.addEventListener("click", function(e) {
+        const miniCard = e.target.closest(".mini-card");
+
+        if (!miniCard) return;
+
+        e.stopPropagation();
+
+        const id = miniCard.dataset.id;
+
+        const realCard = document.querySelector(
+            `.kanban-card[data-id="${id}"]`
+        );
+
+        if (realCard) {
+            openCardModal(realCard, true); // 👈 VIEW ONLY MODE
+        } else {
+            console.warn("No matching card found for:", id);
+        }
+    });
 
 });
 
@@ -180,7 +216,7 @@ function populateStatusDropdown(card) {
 
 
 // ===== CARD MODAL =====
-function openCardModal(card) {
+function openCardModal(card, viewOnly = false) {
 
     activeCard = card;
 
@@ -201,6 +237,17 @@ function openCardModal(card) {
     document.getElementById('modalEmail').innerText = "This is the email body.....";
 
     populateStatusDropdown(card);
+
+   const modal = document.getElementById('cardModal');
+const actions = modal.querySelectorAll('.modal-actions');
+
+actions.forEach(action => {
+    if (viewOnly) {
+        action.style.display = "none";
+    } else {
+        action.style.display = "flex";
+    }
+});
 
     document.getElementById('cardModal').classList.remove('hidden');
 }
@@ -323,4 +370,64 @@ function closeReplyModal() {
 function sendReply() {
     alert("Reply sent (simulated)");
     closeReplyModal();
+}
+
+function logoutUser() {
+
+    const confirmLogout = confirm("Are you sure you want to log out?");
+
+    if (!confirmLogout) return;
+
+    // For now (frontend only)
+    alert("Logged out");
+
+    // Future: redirect to login page
+    // window.location.href = "login.html";
+
+}
+
+function openLogoutModal() {
+    document.getElementById('logoutModal').classList.remove('hidden');
+}
+
+function closeLogoutModal() {
+    document.getElementById('logoutModal').classList.add('hidden');
+}
+
+function confirmLogout() {
+    closeLogoutModal();
+
+    localStorage.removeItem("loggedIn");
+
+    window.location.href = "login.html";
+}
+
+function selectCodeTable(type, el) {
+
+    // update active state
+    document.querySelectorAll('.code-menu-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+
+    // update title
+    document.getElementById('codeTitle').innerText = el.innerText;
+
+    // placeholder for now
+    document.getElementById('codeContent').innerHTML = `
+        <p>Showing ${type} table...</p>
+    `;
+}
+
+function handleAddClick() {
+
+    if (currentTable === "users") {
+        openAddUserModal();
+    }
+
+    if (currentTable === "managers") {
+        openAddManagerModal();
+    }
+
+    if (currentTable === "tasks") {
+        openAddTaskModal();
+    }
 }
