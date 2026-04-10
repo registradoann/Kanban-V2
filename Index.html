@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evergreen Kanban</title>
+
+<link rel="icon" type="image/png" href="https://trustevergreen.com/wp-content/uploads/2017/08/cropped-favicon-150x150.png">
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-top">
+        <div class="toggle-btn" onclick="toggleMenu()">❮</div>
+
+        <div class="logo">
+            <img class="logo-full" src="https://trustevergreen.com/wp-content/uploads/2017/09/evergreen-logo-retina.png">
+            <img class="logo-mini" src="https://trustevergreen.com/wp-content/uploads/2017/08/cropped-favicon-150x150.png">
+        </div>
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-item active" onclick="showScreen('dashboard', this)">
+            <i data-lucide="layout-dashboard" class="icon"></i>
+            <span class="menu-text">Dashboard</span>
+        </div>
+
+        <div class="menu-item" onclick="showScreen('kanban', this)">
+            <i data-lucide="kanban-square" class="icon"></i>
+            <span class="menu-text">Task Board</span>
+        </div>
+
+        <div class="menu-item" onclick="showScreen('profile', this)">
+            <i data-lucide="user" class="icon"></i>
+            <span class="menu-text">My Profile</span>
+        </div>
+
+        <div class="menu-item" onclick="showScreen('code', this)">
+            <i data-lucide="database" class="icon"></i>
+            <span class="menu-text">Code Tables</span>
+        </div>
+        <div class="menu-item logout-item" onclick="openLogoutModal()">
+    <i data-lucide="log-out" class="icon"></i>
+    <span class="menu-text">Logout</span>
+</div>
+
+    </div>
+
+</div>
+
+<div class="main">
+
+<header>
+    <div class="header-bar">
+        <input type="text" placeholder="Search..." />
+    </div>
+</header>
+
+<div class="content">
+
+<div id="dashboard" class="screen active">
+    <h2>This is Dashboard</h2>
+</div>
+
+<div id="kanban" class="screen">
+
+<div class="kanban-board">
+
+<!-- NON URGENT -->
+<div class="kanban-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+<div class="column-header">Non Urgent</div>
+<div class="kanban-card" data-id="task1" draggable="true" onclick="openCardModal(this)">
+<div class="card-top">
+<span class="priority low">LOW</span>
+<div class="assignee unassigned">
+<img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar">
+<span>Unassigned</span>
+</div>
+</div>
+<div class="card-subject">Optional follow-up</div>
+<div class="card-requestor">Nancy Ponce</div>
+</div>
+</div>
+
+<!-- TO DO -->
+<div class="kanban-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+<div class="column-header">To Do</div>
+<div class="kanban-card" data-id="task2"draggable="true" onclick="openCardModal(this)">
+<div class="card-top">
+<span class="priority high">HIGH</span>
+<div class="assignee">
+<img src="https://i.pravatar.cc/30" class="avatar">
+<span>Jenny Pescasio</span>
+</div>
+</div>
+<div class="card-subject">FW: Request for EOI - 106 Chester St.</div>
+<div class="card-requestor">Alan Pollak</div>
+</div>
+</div>
+
+<!-- IN PROGRESS -->
+<div class="kanban-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+<div class="column-header">In Progress</div>
+<div class="kanban-card" data-id="task3"draggable="true" onclick="openCardModal(this)">
+<div class="card-top">
+<span class="priority med">MED</span>
+<div class="assignee">
+<img src="https://i.pravatar.cc/30" class="avatar">
+<span>Jenny Pescasio</span>
+</div>
+</div>
+<div class="card-subject">Processing renewal</div>
+<div class="card-requestor">Miriam Spira</div>
+<div class="card-task">Certificate of Insurance</div>
+</div>
+</div>
+
+<!-- DONE -->
+<div class="kanban-column" ondragover="allowDrop(event)" ondrop="drop(event)">
+<div class="column-header">Done</div>
+<div class="kanban-card" data-id="task4" draggable="true" onclick="openCardModal(this)">
+<div class="card-top">
+<span class="priority low">LOW</span>
+<div class="assignee">
+<img src="https://i.pravatar.cc/30" class="avatar">
+<span>Jenny Pescasio</span>
+</div>
+</div>
+<div class="card-subject">Invoice sent</div>
+<div class="card-requestor">Christina Miller</div>
+<div class="card-task">Notice of Cancellation</div>
+</div>
+</div>
+
+<!-- NOT TASK -->
+<div class="kanban-column not-task" ondragover="allowDrop(event)" ondrop="drop(event)">
+<div class="column-header">Not Task</div>
+<div class="kanban-card" data-id="task5" draggable="true" onclick="openCardModal(this)">
+<div class="card-top">
+<span class="priority low">LOW</span>
+<div class="assignee unassigned">
+<img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar">
+<span>Unassigned</span>
+</div>
+</div>
+<div class="card-subject">FYI email</div>
+<div class="card-requestor">Joel Kivelevitz</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id="profile" class="screen">
+
+    <div class="profile-layout">
+
+        <div class="profile-left">
+
+    <!-- 🔥 PROFILE HEADER -->
+    <div class="profile-header">
+
+        <div class="profile-avatar">
+            <img src="https://i.pravatar.cc/100">
+        </div>
+
+        <div class="profile-info">
+            <h2>Jenny Pescasio</h2>
+            <p>jenny@email.com</p>
+            <p class="profile-bio">Insurance Specialist • Evergreen</p>
+        </div>
+
+    </div>
+
+    <!-- PERSONAL -->
+    <div class="profile-card-left">
+        <h3>Personal Info</h3>
+        <p>Phone Number</p>
+        <p>Address</p>
+        <p>Birthday</p>
+    </div>
+
+    <!-- WORK -->
+    <div class="profile-card-left">
+        <h3>Work Info</h3>
+        <p>Hire Date</p>
+        <p>Salesforce ID</p>
+    </div>
+
+</div>
+
+        <div class="profile-right">
+
+    <div class="profile-card-right">
+        <h3>My Tasks</h3>
+
+        <div class="mini-kanban">
+
+            <!-- IN PROGRESS -->
+            <div class="mini-column">
+                <h4>In Progress</h4>
+
+                <div class="mini-card" data-id="task3">
+                    <div class="mini-top">
+                        <span class="priority high">HIGH</span>
+                        <div class="mini-assignee">
+                            <img src="https://i.pravatar.cc/30" class="avatar">
+                        </div>
+                    </div>
+
+                    <div class="mini-subject">Processing renewal</div>
+                    <div class="mini-requestor">Alan Pollak</div>
+                </div>
+
+            </div>
+
+            <!-- DONE -->
+            <div class="mini-column">
+                <h4>Done</h4>
+
+                <div class="mini-card" data-id="task4">
+                    <div class="mini-top">
+                        <span class="priority low">LOW</span>
+                    </div>
+
+                    <div class="mini-subject">Invoice sent</div>
+                    <div class="mini-requestor">John Smith</div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+    </div>
+
+</div>
+
+<div id="code" class="screen">
+
+    <div class="code-layout">
+
+        <!-- LEFT (30%) -->
+        <div class="code-left">
+            <div class="code-menu">
+
+                <div class="code-menu-item active" onclick="selectCodeTable('users', this)">
+                    Users
+                </div>
+
+                <div class="code-menu-item" onclick="selectCodeTable('managers', this)">
+                    Account Managers
+                </div>
+
+                <div class="code-menu-item" onclick="selectCodeTable('tasks', this)">
+                    Task Types
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT (70%) -->
+        <div class="code-right">
+
+            <div class="code-content-card">
+                <h2 id="codeTitle">Users</h2>
+
+                <div id="codeContent">
+                    
+                </div>
+                <button class="fab-add" onclick="openAddUserModal()">+</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<footer>© 2026 Evergreen Kanban</footer>
+
+</div>
+</div>
+
+<div id="cardModal" class="modal hidden">
+    <div class="modal-content card-modal-large">
+
+        <div class="modal-header">
+            <h2>Task Details</h2>
+            <span class="close-btn" onclick="closeCardModal()">×</span>
+        </div>
+
+        <div class="modal-body">
+
+    <div class="form-row">
+        <div>
+            <label>Time Received:</label>
+            <input type="text" id="modalTime" readonly>
+        </div>
+        <div>
+            <label>From:</label>
+            <input type="text" id="modalFrom" readonly>
+        </div>
+    </div>
+
+    <label>Subject:</label>
+    <input type="text" id="modalSubject" readonly>
+
+    <div class="form-row">
+        <div>
+            <label>CC:</label>
+            <input type="text" id="modalCC" readonly>
+        </div>
+    </div>
+
+    <!-- 🔥 NEW STRUCTURED SECTION -->
+    <div class="form-grid-2x2">
+
+        <div>
+            <label>User:</label>
+            <select id="modalUser">
+                <option>Jenny Pescasio</option>
+                <option>Mark</option>
+                <option>Unassigned</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Status:</label>
+            <select id="modalStatus"></select>
+        </div>
+
+        <div>
+            <label>Task Name:</label>
+            <select id="modalTask">
+                <option>Certificate of Insurance</option>
+                <option>Renewal</option>
+                <option>Endorsement</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Salesforce ID:</label>
+            <input type="text" id="modalSF">
+        </div>
+
+    </div>
+
+    <div class="email-section">
+
+    <label>Email Content:</label>
+
+    <!-- 🔥 TOP BUTTONS -->
+    <div class="modal-actions email-actions top-actions">
+        <button onclick="saveCardChanges()">Save</button>
+        <button onclick="openReplyModal('reply')">Reply</button>
+        <button onclick="openReplyModal('replyAll')">Reply All</button>
+        <button onclick="openReplyModal('forward')">Forward</button>
+        <button onclick="closeCardModal()">Close</button>
+    </div>
+
+    <div id="modalEmail" class="email-body">...</div>
+
+    <!-- 🔥 BOTTOM BUTTONS -->
+    <div class="modal-actions email-actions bottom-actions">
+        <button onclick="saveCardChanges()">Save</button>
+        <button onclick="openReplyModal('reply')">Reply</button>
+        <button onclick="openReplyModal('replyAll')">Reply All</button>
+        <button onclick="openReplyModal('forward')">Forward</button>
+        <button onclick="closeCardModal()">Close</button>
+    </div>
+
+</div>
+
+</div>
+
+    </div>
+</div>
+<div id="confirmModal" class="modal hidden">
+    <div class="modal-content">
+        <p>
+            Are you sure you want to mark this as not a task?<br><br>
+            This deletes the related Salesforce Record for this card.
+        </p>
+
+        <div class="modal-actions">
+            <button onclick="confirmMove()">Yes</button>
+            <button onclick="cancelMove()">No</button>
+        </div>
+    </div>
+</div>
+
+<div id="logoutModal" class="modal hidden">
+    <div class="modal-content">
+        <p>
+            Are you sure you want to log out?
+        </p>
+
+        <div class="modal-actions">
+            <button onclick="confirmLogout()">Yes</button>
+            <button onclick="closeLogoutModal()">No</button>
+        </div>
+    </div>
+</div>
+<div id="replyModal" class="modal hidden">
+    <div class="modal-content card-modal-large">
+
+        <div class="modal-header">
+            <h2>Reply Email</h2>
+            <span class="close-btn" onclick="closeReplyModal()">×</span>
+        </div>
+
+        <div class="modal-body">
+
+            <label>To:</label>
+<input type="text" id="replyTo">
+
+<label>CC:</label>
+<input type="text" id="replyCC">
+<label>BCC:</label>
+<input type="text" id="replyBCC">
+
+<label>Subject:</label>
+<input type="text" id="replySubject">
+
+            <label>Message:</label>
+            <textarea id="replyBody" rows="10" style="resize: vertical;"></textarea>
+
+            <div class="modal-actions">
+                <button onclick="sendReply()">Send</button>
+                <button onclick="closeReplyModal()">Cancel</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
