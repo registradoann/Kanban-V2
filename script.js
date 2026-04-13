@@ -402,32 +402,5 @@ function confirmLogout() {
     window.location.href = "login.html";
 }
 
-function selectCodeTable(type, el) {
 
-    // update active state
-    document.querySelectorAll('.code-menu-item').forEach(i => i.classList.remove('active'));
-    el.classList.add('active');
 
-    // update title
-    document.getElementById('codeTitle').innerText = el.innerText;
-
-    // placeholder for now
-    document.getElementById('codeContent').innerHTML = `
-        <p>Showing ${type} table...</p>
-    `;
-}
-
-function handleAddClick() {
-
-    if (currentTable === "users") {
-        openAddUserModal();
-    }
-
-    if (currentTable === "managers") {
-        openAddManagerModal();
-    }
-
-    if (currentTable === "tasks") {
-        openAddTaskModal();
-    }
-}
