@@ -620,3 +620,82 @@ footer {
 
     transition: all 0.2s ease;
 }
+
+/* HIDE ALL CONTENT FIRST */
+.code-content-card {
+    display: none;
+}
+
+/* SHOW BASED ON SELECTED TAB */
+#tab-users:checked ~ .code-layout .code-users {
+    display: block;
+}
+
+#tab-managers:checked ~ .code-layout .code-managers {
+    display: block;
+}
+
+#tab-tasks:checked ~ .code-layout .code-tasks {
+    display: block;
+}
+
+/* ACTIVE MENU HIGHLIGHT */
+.code-menu-item {
+    display: block;
+}
+
+#tab-users:checked ~ .code-layout label[for="tab-users"],
+#tab-managers:checked ~ .code-layout label[for="tab-managers"],
+#tab-tasks:checked ~ .code-layout label[for="tab-tasks"] {
+    background: rgba(84,173,124,0.3);
+}
+
+/* TABLE */
+.code-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+/* HEADER */
+.code-table thead {
+    background: rgba(255,255,255,0.08);
+}
+
+.code-table th {
+    text-align: left;
+    padding: 10px;
+    font-weight: 600;
+    color: #54AD7C;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ROWS */
+.code-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* HOVER */
+.code-table tbody tr:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* STATUS TAGS */
+.tag {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tag.active {
+    background: rgba(84,173,124,0.3);
+    color: #54AD7C;
+}
+
+.tag.inactive {
+    background: rgba(255,0,0,0.2);
+    color: #ff6b6b;
+}
