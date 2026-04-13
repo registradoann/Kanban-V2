@@ -248,37 +248,110 @@
 
 <div id="code" class="screen">
 
+    <!-- HIDDEN RADIO CONTROLS -->
+    <input type="radio" name="codeTab" id="tab-users" checked hidden>
+    <input type="radio" name="codeTab" id="tab-managers" hidden>
+    <input type="radio" name="codeTab" id="tab-tasks" hidden>
+
     <div class="code-layout">
 
-        <!-- LEFT (30%) -->
+        <!-- LEFT MENU -->
         <div class="code-left">
             <div class="code-menu">
 
-                <div class="code-menu-item active" onclick="selectCodeTable('users', this)">
-                    Users
-                </div>
-
-                <div class="code-menu-item" onclick="selectCodeTable('managers', this)">
-                    Account Managers
-                </div>
-
-                <div class="code-menu-item" onclick="selectCodeTable('tasks', this)">
-                    Task Types
-                </div>
+                <label for="tab-users" class="code-menu-item">Users</label>
+                <label for="tab-managers" class="code-menu-item">Account Managers</label>
+                <label for="tab-tasks" class="code-menu-item">Task Types</label>
 
             </div>
         </div>
 
-        <!-- RIGHT (70%) -->
+        <!-- RIGHT CONTENT -->
         <div class="code-right">
 
-            <div class="code-content-card">
-                <h2 id="codeTitle">Users</h2>
+            <!-- USERS -->
+            <div class="code-content-card code-users">
+                <h2>Users</h2>
 
-                <div id="codeContent">
-                    
-                </div>
-                <button class="fab-add" onclick="openAddUserModal()">+</button>
+                <table class="code-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Jenny Pescasio</td>
+            <td>jenny@email.com</td>
+            <td>User</td>
+            <td><span class="tag active">Active</span></td>
+        </tr>
+        <tr>
+            <td>Mark Cruz</td>
+            <td>mark@email.com</td>
+            <td>Admin</td>
+            <td><span class="tag inactive">Inactive</span></td>
+        </tr>
+    </tbody>
+</table>
+
+                <button class="fab-add">+</button>
+            </div>
+
+            <!-- MANAGERS -->
+            <div class="code-content-card code-managers">
+                <h2>Account Managers</h2>
+
+                <table class="code-table">
+                <table class="code-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Email</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Mark Cruz</td>
+            <td>Sales</td>
+            <td>mark@email.com</td>
+            <td><span class="tag active">Active</span></td>
+        </tr>
+    </tbody>
+</table>
+
+                <button class="fab-add">+</button>
+            </div>
+
+            <!-- TASK TYPES -->
+            <div class="code-content-card code-tasks">
+                <h2>Task Types</h2>
+
+                <table class="code-table">
+    <thead>
+        <tr>
+            <th>Task Name</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Certificate of Insurance</td>
+            <td>Documentation</td>
+            <td>High</td>
+            <td><span class="tag active">Active</span></td>
+        </tr>
+    </tbody>
+</table>
+
+                <button class="fab-add">+</button>
             </div>
 
         </div>
