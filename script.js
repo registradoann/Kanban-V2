@@ -1,3 +1,6 @@
+let userStatusStart = {}; 
+// { "Juvy": timestamp, "Jenny": timestamp }
+
 if (!localStorage.getItem("loggedIn")) {
     window.location.href = "login.html";
 }
@@ -126,18 +129,26 @@ function drop(e) {
     e.preventDefault();
 
     const column = e.currentTarget;
+    const statusName = column.querySelector('.column-header').innerText;
 
     if (column.classList.contains('not-task')) {
         pendingMove = {
             column: column,
-            y: e.clientY
+            y: e.clientY,
+            status: statusName
         };
 
         document.getElementById('confirmModal').classList.remove('hidden');
         return false;
     }
-}
 
+    // NORMAL DROP
+    moveCard(column, e.clientY);
+
+    if (draggedCard) {
+        draggedCard.dataset.status = statusName; // 🔥 ADD THIS
+    }
+}
 
 // ===== MOVE LOGIC =====
 function moveCard(column, y) {
@@ -172,6 +183,8 @@ function getDragAfterElement(column, y) {
 function confirmMove() {
     if (pendingMove && draggedCard) {
         moveCard(pendingMove.column, pendingMove.y);
+
+        draggedCard.dataset.status = pendingMove.status; // 🔥 ADD THIS
     }
     closeConfirmModal();
 }
@@ -195,7 +208,6 @@ function closeConfirmModal() {
 
 // ===== STATUS DROPDOWN =====
 function populateStatusDropdown(card) {
-
     const currentColumn = card.closest('.kanban-column');
     const currentName = currentColumn.querySelector('.column-header').innerText;
 
@@ -205,12 +217,15 @@ function populateStatusDropdown(card) {
     document.querySelectorAll('.kanban-column').forEach(col => {
         const name = col.querySelector('.column-header').innerText;
 
-        if (name !== currentName) {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            dropdown.appendChild(option);
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+
+        if (name === currentName) {
+            option.selected = true; // 🔥 THIS FIXES SYNC
         }
+
+        dropdown.appendChild(option);
     });
 }
 
@@ -402,5 +417,187 @@ function confirmLogout() {
     window.location.href = "login.html";
 }
 
+let currentUser = "Juvy"; // TEMP (later dynamic)
+let userPunchState = {};  // { user: "Break" | "Away" | "Non SQ" | null }
 
+function setStatus(status) {
+    userPunchState[currentUser] = status;
 
+    userStatusStart[currentUser] = Date.now(); // 🔥 reset timer
+
+    updateAllStatuses();
+}
+function clearStatus() {
+    userPunchState[currentUser] = null;
+
+    userStatusStart[currentUser] = Date.now(); // 🔥 new state start
+
+    updateAllStatuses();
+}
+
+function finishTask() {
+    const cards = document.querySelectorAll('.kanban-card');
+
+    cards.forEach(card => {
+        const assignee = card.querySelector('.assignee span')?.innerText;
+        const column = card.closest('.kanban-column')
+                          .querySelector('.column-header').innerText;
+
+        if (assignee === currentUser && column === "In Progress") {
+            const doneColumn = [...document.querySelectorAll('.kanban-column')]
+                .find(col => col.querySelector('.column-header').innerText === "Done");
+
+            if (doneColumn) doneColumn.appendChild(card);
+        }
+    });
+
+    userStatusStart[currentUser] = Date.now(); // 🔥 reset after finishing
+
+    updateAllStatuses();
+}
+function getUserActiveTasks(user) {
+    const cards = document.querySelectorAll('.kanban-card');
+
+    let count = 0;
+
+    cards.forEach(card => {
+        const assignee = card.querySelector('.assignee span')?.innerText;
+        const column = card.closest('.kanban-column')
+                          .querySelector('.column-header').innerText;
+
+        if (assignee === user && column === "In Progress") {
+            count++;
+        }
+    });
+
+    return count;
+}
+function computeStatus(user) {
+    const punch = userPunchState[user];
+    const activeTasks = getUserActiveTasks(user);
+
+    if (punch === "Break") return "Break";
+    if (punch === "Away") return "Away";
+    if (punch === "Non SQ") return "Non SQ";
+
+    if (activeTasks > 0) return "Processing";
+
+    return "Idle";
+}
+function refreshAgentStatus() {
+    const users = ["Juvy", "Jenny", "Marix", "Mackie", "Alani"];
+
+    const tbody = document.querySelector('.agent-status-table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    users.forEach(user => {
+        const status = computeStatus(user);
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${user}</td>
+                <td>${status}</td>
+                <td>--</td>
+            </tr>
+        `;
+    });
+}
+function highlightActive(status) {
+    document.querySelectorAll('.status-controls button')
+        .forEach(btn => btn.classList.remove('active'));
+
+    if (status) {
+        document.querySelector(`button[onclick="setStatus('${status}')"]`)
+            ?.classList.add('active');
+    }
+}
+
+function updateUserStatusUI(user) {
+    const status = computeStatus(user);
+
+    const statusEl = document.getElementById(`status-${user}`);
+    const durationEl = document.getElementById(`duration-${user}`);
+
+    if (!statusEl) return;
+
+    statusEl.innerText = status;
+
+    statusEl.className = "status";
+
+    if (status === "Processing") statusEl.classList.add("processing");
+    if (status === "Break") statusEl.classList.add("break");
+    if (status === "Away") statusEl.classList.add("away");
+    if (status === "Non SQ") statusEl.classList.add("nonsq");
+    if (status === "Idle") statusEl.classList.add("idle");
+
+    // 🔥 TIMER UPDATE
+    if (durationEl && userStatusStart[user]) {
+        const elapsed = Date.now() - userStatusStart[user];
+        durationEl.innerText = formatDuration(elapsed);
+    }
+}
+function updateAllStatuses() {
+    const users = ["Juvy", "Jenny", "Marix", "Mackie", "Alani"];
+
+    users.forEach(user => {
+        updateUserStatusUI(user);
+    });
+
+    // 🔥 ADD THIS
+    updateStatusButtons(currentUser);
+}
+document.addEventListener("DOMContentLoaded", function () {
+    updateAllStatuses();
+});
+
+function formatDuration(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+
+    const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSeconds % 60).padStart(2, '0');
+
+    return `${hrs}:${mins}:${secs}`;
+}
+
+setInterval(() => {
+    updateAllStatuses();
+}, 1000);
+
+function updateStatusButtons(user) {
+    const currentStatus = computeStatus(user);
+
+    const buttons = document.querySelectorAll('.status-btn');
+
+    buttons.forEach(btn => {
+        btn.classList.remove('disabled', 'active');
+
+        const label = btn.querySelector('.btn-text')?.innerText;
+
+        // 🔥 BREAK MODE (lock everything except Back)
+        if (currentStatus === "Break") {
+
+            if (label === "Back") {
+                btn.classList.add('active'); // optional highlight
+            } else {
+                btn.classList.add('disabled');
+            }
+
+            return;
+        }
+
+        // 🔥 NORMAL MODE
+
+        // Disable current status button only
+        if (
+            (currentStatus === "Away" && label === "Away") ||
+            (currentStatus === "Non SQ" && label === "Non SQ")
+        ) {
+            btn.classList.add('disabled');
+            btn.classList.add('active');
+        }
+
+    });
+}
