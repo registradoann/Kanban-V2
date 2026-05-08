@@ -753,29 +753,159 @@ footer {
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* STATUS BADGES */
-.status {
+/* ===== STATUS CONTROLS CONTAINER ===== */
+.status-controls {
+    margin-top: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ===== BASE BUTTON ===== */
+/* ===== SMALLER STATUS BUTTON ===== */
+.status-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 10px;          /* ↓ smaller */
+    border-radius: 6px;         /* ↓ less rounded */
+    border: none;
+    cursor: pointer;
+
+    font-size: 12px;            /* ↓ smaller text */
+    font-weight: 500;           /* ↓ lighter weight */
+
+    background: rgba(255,255,255,0.06); /* ↓ more subtle */
+    color: #ddd;
+
+    backdrop-filter: blur(4px);
+    transition: all 0.15s ease;
+
+    position: relative;
+}
+
+/* ICON */
+.status-btn i {
+    width: 14px;                /* ↓ smaller icon */
+    height: 14px;
+}
+
+/* HOVER */
+.status-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+}
+
+/* ACTIVE */
+.status-btn.active {
+    background: #54AD7C;
+    color: #fff;
+}
+
+/* COLOR STRIP (thinner) */
+.status-btn.break {
+    border-left: 3px solid #f39c12;
+}
+
+.status-btn.away {
+    border-left: 3px solid #3498db;
+}
+
+.status-btn.nonsq {
+    border-left: 3px solid #9b59b6;
+}
+
+.status-btn.back {
+    border-left: 3px solid #7f8c8d;
+}
+
+.status-btn.finish {
+    border-left: 3px solid #2ecc71;
+}
+
+/* ===== COLLAPSED SIDEBAR MODE ===== */
+.sidebar.collapsed .status-controls {
+    padding: 6px 4px;
+}
+
+/* CENTER ICONS */
+.sidebar.collapsed .status-btn {
+    justify-content: center;
+    padding: 8px 0;
+    gap: 0;
+}
+
+/* HIDE TEXT */
+.sidebar.collapsed .status-btn .btn-text {
+    display: none;
+}
+
+/* REMOVE LEFT BORDER (looks off when centered) */
+.sidebar.collapsed .status-btn {
+    border-left: none;
+}
+
+/* ===== TOOLTIP (ONLY IN COLLAPSED) ===== */
+.sidebar.collapsed .status-btn:hover::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+
     padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* OPTIONAL: subtle shadow on hover */
+.status-btn:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ===== STATUS BADGE ===== */
+.status {
+    padding: 4px 10px;
     border-radius: 6px;
     font-size: 11px;
     font-weight: 600;
+    color: #fff;
+    display: inline-block;
 }
 
-.status.processing { background: #2ecc71; color: #000; }
-.status.break { background: #FF991C}
-.status.idle { background:  #e74c3c; }
-.status.nonsq { background: #3498db; }
-.status.cr { background: #888; }
-.status.step { background: #555; }
+/* ===== STATUS COLORS (SYNC WITH BUTTONS) ===== */
 
-/* STAT CARDS */
-.stat-card {
-    background: rgba(0,0,0,0.55);
-    padding: 16px;
-    border-radius: 10px;
+.status.processing {
+    background: #2ecc71; /* green */
 }
 
-.stat-card h2 {
-    margin: 6px 0 0;
-    color: #54AD7C;
+.status.break {
+    background: #f39c12; /* orange */
+}
+
+.status.away {
+    background: #3498db; /* blue */
+}
+
+.status.nonsq {
+    background: #9b59b6; /* 🔥 PURPLE (fix) */
+}
+
+.status.idle {
+    background: #7f8c8d; /* gray */
+}
+
+/* DISABLED STATE */
+.status-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none; /* 🔥 makes it unclickable */
 }
