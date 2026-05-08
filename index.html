@@ -47,7 +47,37 @@
             <i data-lucide="database" class="icon"></i>
             <span class="menu-text">Code Tables</span>
         </div>
-        <div class="menu-item logout-item" onclick="openLogoutModal()">
+        
+<div class="status-controls">
+
+    <button class="status-btn break" onclick="setStatus('Break')">
+    <i data-lucide="coffee"></i>
+    <span class="btn-text">Break</span>
+</button>
+
+<button class="status-btn away" onclick="setStatus('Away')">
+    <i data-lucide="user-x"></i>
+    <span class="btn-text">Away</span>
+</button>
+
+<button class="status-btn nonsq" onclick="setStatus('Non SQ')">
+    <i data-lucide="slash"></i>
+    <span class="btn-text">Non SQ</span>
+</button>
+
+<button class="status-btn back" onclick="clearStatus()">
+    <i data-lucide="corner-up-left"></i>
+    <span class="btn-text">Back</span>
+</button>
+
+<button class="status-btn finish" onclick="finishTask()">
+    <i data-lucide="check"></i>
+    <span class="btn-text">Finish</span>
+</button>
+
+
+</div>
+<div class="menu-item logout-item" onclick="openLogoutModal()">
     <i data-lucide="log-out" class="icon"></i>
     <span class="menu-text">Logout</span>
 </div>
@@ -149,33 +179,32 @@
                             <th>Duration</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Juvy</td>
-                            <td><span class="status processing">Processing</span></td>
-                            <td>2:00:00</td>
-                        </tr>
-                        <tr>
-                            <td>Jenny</td>
-                            <td><span class="status break">Break</span></td>
-                            <td>00:45:00</td>
-                        </tr>
-                        <tr>
-                            <td>Marix</td>
-                            <td><span class="status idle">Idle</span></td>
-                            <td>00:30:00</td>
-                        </tr>
-                        <tr>
-                            <td>Mackie</td>
-                            <td><span class="status cr">Away</span></td>
-                            <td>00:15:00</td>
-                        </tr>
-                        <tr>
-                            <td>Alani</td>
-                            <td><span class="status processing">Non SQ</span></td>
-                            <td>01:30:00</td>
-                        </tr>
-                    </tbody>
+                    <tbody class="agent-status-table">
+    <tr>
+        <td>Juvy</td>
+        <td><span id="status-Juvy" class="status"></span></td>
+        <td id="duration-Juvy">00:00:00</td>    </tr>
+    <tr>
+        <td>Jenny</td>
+        <td><span id="status-Jenny" class="status"></span></td>
+        <td id="duration-Jenny">00:00:00</td>
+    </tr>
+    <tr>
+        <td>Marix</td>
+        <td><span id="status-Marix" class="status"></span></td>
+        <td id="duration-Marix">00:00:00</td>
+    </tr>
+    <tr>
+        <td>Mackie</td>
+        <td><span id="status-Mackie" class="status"></span></td>
+        <td id="duration-Mackie">00:00:00</td>
+    </tr>
+    <tr>
+        <td>Alani</td>
+        <td><span id="status-Alani" class="status"></span></td>
+        <td id="duration-Alani">00:00:00</td>
+    </tr>
+</tbody>
                 </table>
             </div>
 
@@ -238,7 +267,7 @@
 <span class="priority high">HIGH</span>
 <div class="assignee">
 <img src="https://i.pravatar.cc/30" class="avatar">
-<span>Jenny Pescasio</span>
+<span>Juvy Ariola</span>
 </div>
 </div>
 <div class="card-subject">FW: Request for EOI - 106 Chester St.</div>
